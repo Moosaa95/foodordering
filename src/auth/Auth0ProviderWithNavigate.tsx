@@ -1,4 +1,3 @@
-import { useRegisterUserMutation } from "@/hooks/features/endpoints/authApiSlice"
 import {Auth0Provider} from  "@auth0/auth0-react"
 import { useNavigate } from "react-router-dom"
 type Props = {
@@ -12,6 +11,8 @@ export default function Auth0ProviderWithNavigate({children}:Props){
     const redirectUrl = import.meta.env.VITE_AUTH0_CALLBACK_URL 
 
 
+    console.log('=======DOMAIN', domain);
+    
     if (!domain || !clientId || !redirectUrl) {
         throw new Error("Unable to initailise auth")
     }

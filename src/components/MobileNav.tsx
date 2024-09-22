@@ -2,12 +2,13 @@ import { CircleUserRound, Menu } from "lucide-react";
 import { Sheet, SheetContent, SheetDescription, SheetTitle, SheetTrigger } from "./ui/sheet";
 import { Separator } from "./ui/separator";
 import { Button } from "./ui/button";
-import { useAuth0 } from "@auth0/auth0-react";
-import UsernameMenu from "./UsernameMenu";
-import MobileNavLinks from "./MobileNavLinks";
+import useAuth from "@/hooks/useAuth";
 
 export default function MobileNav() {
-    const {loginWithRedirect, user, isAuthenticated} = useAuth0()
+    // Destructure necessary states from useAuth hook
+    const { isAuthenticated } = useAuth();
+    // const { user, userError, isAuthenticated, isFetchingUser, isLoading } = useAuth();
+
     return (
         <Sheet>
             <SheetTrigger>
@@ -15,21 +16,28 @@ export default function MobileNav() {
             </SheetTrigger>
             <SheetContent className="space-y-3">
                 <SheetTitle>
-                    {isAuthenticated ? (<span className="flex items-center font-bold gap-2">
-                        <CircleUserRound className="text-orange-500" />
-                        {user?.email}
-                    </span>):(
-                        <span>Welcome to EatFood</span>)}
+                    {/* {isLoading || isFetchingUser ? (
+                        <span>Loading...</span>
+                    ) : isAuthenticated && user ? (
+                        <span className="flex items-center gap-2 font-bold">
+                            <CircleUserRound className="text-orange-500" />
+                            {user.email}
+                        </span>
+                    ) : (
+                        <span>Welcome to EatFood</span>
+                    )} */}
                 </SheetTitle>
                 <Separator />
                 <SheetDescription className="flex flex-col gap-4">
-                    {isAuthenticated ? (
-                        <MobileNavLinks />
-                    ): (
-                        <Button onClick={async () => await loginWithRedirect()} className="flex-1 font-bold bg-orange-500">Login</Button>
+                    {!isAuthenticated ? (
+                        <Button className="flex-1 font-bold bg-orange-500">
+                            Login
+                        </Button>
+                    ) : (
+                        <span>Navigation Links</span>
                     )}
                 </SheetDescription>
             </SheetContent>
         </Sheet>
-    )
+    );
 }
